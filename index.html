@@ -202,36 +202,41 @@ function App(){
 
   // HOME
   if(view==="home")return <div style={{minHeight:"100vh",background:"transparent",display:"flex",alignItems:"center",justifyContent:"center",padding:24}}>
-    <div style={{maxWidth:520,width:"100%",textAlign:"center"}}>
-      <div style={{marginBottom:32}}>
+    <div style={{maxWidth:540,width:"100%"}}>
+      <div style={{textAlign:"center",marginBottom:36}}>
         <div style={{width:64,height:64,borderRadius:"50%",background:"linear-gradient(135deg,#2B5EA7,#5B8AF0)",margin:"0 auto 20px",display:"flex",alignItems:"center",justifyContent:"center"}}>
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
         </div>
-        <h1 style={{fontFamily:"'Noto Serif JP',serif",fontSize:26,color:P.pri,marginBottom:8,fontWeight:700}}>ゲーム体験についてのご質問</h1>
-        <div style={{fontSize:13,color:P.mut,lineHeight:2.0,maxWidth:480,margin:"0 auto",textAlign:"left"}}>
-          <p style={{marginBottom:12}}>この調査研究は，ゲームを用いて人生を省察する体験の影響について確認することを目的としています。</p>
-          <p style={{marginBottom:12}}>ここで得られたデータは統計的に処理されますので，個人情報が公開されることはありません。<br/>また，回答は任意であり，研究への参加の有無が授業内容に影響することはありません。<br/>回答結果が評価に影響することもありません。<br/>できるだけ多くの方のご協力を必要としております。<br/>ご協力の程よろしくお願い申し上げます。</p>
-          <p style={{marginBottom:12}}>なお，この調査の回答をもちまして，本研究の協力に同意いただいたものとさせていただきます。</p>
-          <p style={{marginBottom:4,fontWeight:500,color:P.txt}}>研究責任者：東京大学情報学環　藤本　徹<br/>研究実施者：東京大学情報学環　坂井裕紀</p>
-          <p style={{marginTop:12}}>ご不明な点がありましたら，下記までご連絡ください。<br/>連絡先（坂井 裕紀：さかい ひろのり）：<a href="mailto:hironori.sakai@iii.u-tokyo.ac.jp" style={{color:P.pri}}>hironori.sakai@iii.u-tokyo.ac.jp</a></p>
-        </div>
+        <h1 style={{fontFamily:"'Noto Serif JP',serif",fontSize:24,color:"#FFFFFF",marginBottom:16,fontWeight:700,lineHeight:1.5}}>ゲーム体験についてのご質問に<br/>ご協力ください。</h1>
+        <p style={{fontSize:14,color:"rgba(255,255,255,0.85)",lineHeight:1.9,textAlign:"left",margin:"0 auto",maxWidth:500}}>この質問は，ゲームを用いて人生を省察する体験の影響について確認することを目的としています。</p>
       </div>
-      <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      <div style={{marginBottom:28,paddingLeft:4}}>
+        <p style={{fontSize:13,color:"rgba(255,255,255,0.8)",lineHeight:2.0,margin:"0 0 16px"}}>ここで得られたデータは統計的に処理され，個人情報が公開されることはありません。<br/>また，回答は任意であり，回答の有無が授業の内容に影響することはありません。<br/>回答結果が評価に影響することもありません。</p>
+        <p style={{fontSize:13,color:"rgba(255,255,255,0.8)",lineHeight:2.0,margin:0}}>できるだけ多くの方のご協力を必要としております。<br/>ご協力の程よろしくお願い申し上げます。</p>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:16,marginBottom:28}}>
         {[{k:"pre",t:"ゲーム体験前のご質問",d:"人生満足度、コーピング、成長、プレイフルネスに関する質問",e:"推定時間：10〜15分",c:"全64問"},
           {k:"post",t:"ゲーム体験後のご質問",d:"人生満足度、コーピング、成長、学習動機づけに関する質問",e:"推定時間：10〜15分",c:"全50問"}
         ].map(s=><button key={s.k} onClick={()=>{setView(s.k);setAns({});setOth({});setDone(false);setErrs(false);setGs(null);window.scrollTo(0,0)}}
-          style={{background:"rgba(255,255,255,0.06)",border:`1.5px solid ${P.bdr}`,borderRadius:12,padding:"24px 28px",textAlign:"left",cursor:"pointer",transition:"all 0.2s",boxShadow:"0 1px 3px rgba(0,0,0,0.2)"}}
-          onMouseEnter={e=>{e.currentTarget.style.borderColor=P.pri;e.currentTarget.style.boxShadow="0 4px 16px rgba(91,138,240,0.2)";e.currentTarget.style.background="rgba(255,255,255,0.09)"}}
-          onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(255,255,255,0.12)";e.currentTarget.style.boxShadow="0 1px 3px rgba(0,0,0,0.2)";e.currentTarget.style.background="rgba(255,255,255,0.06)"}}>
+          style={{background:"linear-gradient(135deg,rgba(91,138,240,0.15),rgba(43,94,167,0.2))",border:"1.5px solid rgba(91,138,240,0.35)",borderRadius:12,padding:"24px 28px",textAlign:"left",cursor:"pointer",transition:"all 0.2s",boxShadow:"0 2px 8px rgba(0,0,0,0.2)"}}
+          onMouseEnter={e=>{e.currentTarget.style.borderColor="#5B8AF0";e.currentTarget.style.boxShadow="0 4px 20px rgba(91,138,240,0.3)";e.currentTarget.style.background="linear-gradient(135deg,rgba(91,138,240,0.25),rgba(43,94,167,0.3))"}}
+          onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(91,138,240,0.35)";e.currentTarget.style.boxShadow="0 2px 8px rgba(0,0,0,0.2)";e.currentTarget.style.background="linear-gradient(135deg,rgba(91,138,240,0.15),rgba(43,94,167,0.2))"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <div><h3 style={{fontFamily:"'Noto Serif JP',serif",fontSize:17,color:P.pri,margin:"0 0 6px",fontWeight:600}}>{s.t}</h3>
-            <p style={{fontSize:13,color:P.mut,margin:0,lineHeight:1.6}}>{s.d}</p>
+            <div><h3 style={{fontFamily:"'Noto Sans JP',sans-serif",fontSize:17,color:"rgba(255,255,255,0.85)",margin:"0 0 6px",fontWeight:500}}>{s.t}</h3>
+            <p style={{fontSize:13,color:"rgba(255,255,255,0.6)",margin:0,lineHeight:1.6}}>{s.d}</p>
             <p style={{fontSize:12,color:P.acc,margin:"6px 0 0",fontWeight:500}}>{s.e}　|　{s.c}</p></div>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={P.pri} strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B8AF0" strokeWidth="2.5"><path d="M9 18l6-6-6-6"/></svg>
           </div>
         </button>)}
       </div>
-      <p style={{fontSize:11,color:P.mut,marginTop:32,lineHeight:1.6}}>この調査の回答をもちまして，本研究の協力に同意いただいたものとさせていただきます。すべての回答は匿名です。</p>
+      <div style={{borderTop:"1px solid rgba(255,255,255,0.1)",paddingTop:24,textAlign:"center"}}>
+        <p style={{fontSize:12,color:"rgba(255,255,255,0.7)",lineHeight:1.8,marginBottom:20}}>この回答をもちまして，本研究の協力に同意いただいたものとさせていただきます。<br/>すべての回答は匿名です。</p>
+        <div style={{fontSize:12,color:"rgba(255,255,255,0.6)",lineHeight:1.9,textAlign:"center"}}>
+          <p style={{margin:"0 0 4px",fontWeight:500,color:"rgba(255,255,255,0.85)"}}>調査責任者：東京大学情報学環　藤本　徹</p>
+          <p style={{margin:"0 0 16px",fontWeight:500,color:"rgba(255,255,255,0.85)"}}>調査実施者：東京大学情報学環　坂井裕紀</p>
+          <p style={{margin:0}}>ご不明な点がありましたら，下記までご連絡ください。<br/>連絡先（坂井 裕紀：さかい ひろのり）：<a href="mailto:hironori.sakai@iii.u-tokyo.ac.jp" style={{color:"#7BA4F7"}}>hironori.sakai@iii.u-tokyo.ac.jp</a></p>
+        </div>
+      </div>
     </div>
   </div>;
 
@@ -258,7 +263,7 @@ function App(){
         <button onClick={()=>{if(window.confirm("回答内容は保存されません。トップに戻りますか？"))reset()}} style={{background:"none",border:"none",color:P.mut,cursor:"pointer",fontSize:13,padding:0,marginBottom:12,display:"flex",alignItems:"center",gap:4}}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>トップに戻る
         </button>
-        <h1 style={{fontFamily:"'Noto Serif JP',serif",fontSize:22,color:P.pri,margin:0,fontWeight:700}}>{isPre?"ゲーム体験前のご質問":"ゲーム体験後のご質問"}</h1>
+        <h1 style={{fontFamily:"'Noto Sans JP',sans-serif",fontSize:22,color:"rgba(255,255,255,0.85)",margin:0,fontWeight:500}}>{isPre?"ゲーム体験前のご質問":"ゲーム体験後のご質問"}</h1>
       </div>
 
       {errs&&missing.length>0&&<div style={{background:"rgba(240,112,112,0.12)",border:"1px solid rgba(240,112,112,0.3)",borderRadius:10,padding:"14px 20px",marginBottom:24}}>
@@ -266,7 +271,7 @@ function App(){
       </div>}
 
       <div style={{background:P.card,border:`1px solid ${P.bdr}`,borderRadius:10,padding:"20px 24px",marginBottom:32}}>
-        <h3 style={{fontFamily:"'Noto Serif JP',serif",fontSize:16,color:P.pri,margin:"0 0 16px"}}>{isPre?"基本情報":"匿名コード"}</h3>
+        <h3 style={{fontFamily:"'Noto Sans JP',sans-serif",fontSize:16,color:"rgba(255,255,255,0.85)",margin:"0 0 16px",fontWeight:500}}>{isPre?"基本情報":"匿名コード"}</h3>
         {(isPre?PRE.demo:POST.code).map(q=><div key={q.id} id={`f-${q.id}`}>
           <DQ q={q} value={ans[q.id]} onChange={v=>sa(q.id,v)} ov={oth[q.id]} onOv={v=>so(q.id,v)}/>
           {errs&&missing.includes(q.id)&&<p style={{color:P.err,fontSize:12,margin:"-16px 0 16px",fontWeight:500}}>この項目は必須です</p>}
