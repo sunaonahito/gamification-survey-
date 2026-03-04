@@ -98,14 +98,20 @@ function Bar({cur,tot}){
 function SQ({item,scale,value,onChange}){
   const n=scale.max-scale.min+1;
   const vals=Array.from({length:n},(_,i)=>scale.min+i);
+  const lFirst=scale.labels[0];const lLast=scale.labels[n-1];
   return <div style={{padding:"20px 0",borderBottom:`1px solid ${P.bdr}`}}>
     <p style={{margin:"0 0 14px",fontSize:15,color:P.txt,lineHeight:1.7}}><span style={{color:P.acc,fontWeight:600,marginRight:8,fontSize:13}}>{item.id.toUpperCase()}</span>{item.t}</p>
-    <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",maxWidth:Math.min(n*56,620)}}>
-      {vals.map((v,i)=>{const sel=value===v;const lb=scale.labels[i];return <div key={v} style={{display:"flex",flexDirection:"column",alignItems:"center",flex:"1 1 0",minWidth:0}}>
-        <button onClick={()=>onChange(v)} style={{width:36,height:36,borderRadius:"50%",border:sel?`2px solid ${P.sel}`:`2px solid ${P.bdr}`,background:sel?P.sel:"transparent",color:sel?"#fff":P.mut,fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s",display:"flex",alignItems:"center",justifyContent:"center"}}
-          onMouseEnter={e=>{if(!sel){e.target.style.borderColor=P.priL;e.target.style.background=P.selBg}}} onMouseLeave={e=>{if(!sel){e.target.style.borderColor=P.bdr;e.target.style.background="transparent"}}}>{v}</button>
-        {(i===0||i===vals.length-1||(lb&&lb!==""))&&lb&&<span style={{fontSize:10,color:P.mut,marginTop:6,textAlign:"center",lineHeight:1.3,maxWidth:60,wordBreak:"keep-all"}}>{lb}</span>}
-      </div>})}
+    <div style={{maxWidth:Math.min(n*56,620)}}>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+        {vals.map((v,i)=>{const sel=value===v;return <div key={v} style={{display:"flex",flexDirection:"column",alignItems:"center",flex:"1 1 0",minWidth:0}}>
+          <button onClick={()=>onChange(v)} style={{width:36,height:36,borderRadius:"50%",border:sel?`2px solid ${P.sel}`:`2px solid ${P.bdr}`,background:sel?P.sel:"transparent",color:sel?"#fff":P.mut,fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s",display:"flex",alignItems:"center",justifyContent:"center"}}
+            onMouseEnter={e=>{if(!sel){e.target.style.borderColor=P.priL;e.target.style.background=P.selBg}}} onMouseLeave={e=>{if(!sel){e.target.style.borderColor=P.bdr;e.target.style.background="transparent"}}}>{v}</button>
+        </div>})}
+      </div>
+      {(lFirst||lLast)&&<div style={{display:"flex",justifyContent:"space-between",marginTop:6}}>
+        <span style={{fontSize:10,color:P.mut,lineHeight:1.3}}>{lFirst}</span>
+        <span style={{fontSize:10,color:P.mut,lineHeight:1.3,textAlign:"right"}}>{lLast}</span>
+      </div>}
     </div>
   </div>;
 }
