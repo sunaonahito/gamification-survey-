@@ -127,15 +127,16 @@ function SS({section,answers,set}){
 }
 
 function CodeGen({value,onChange,isPost}){
+  const L2=(s)=>s.toUpperCase().replace(/[^A-Z]/g,"").substring(0,2);
   const parse=(v)=>{
-    if(v&&v.length>=7){
+    if(v&&v.length>=10){
       const mm=parseInt(v.substring(0,2),10);
       const dd=parseInt(v.substring(2,4),10);
-      const city=v.substring(4,5).toUpperCase();
-      const fam=v.substring(5,6).toUpperCase();
-      const giv=v.substring(6,7).toUpperCase();
+      const city=v.substring(4,6).toUpperCase();
+      const fam=v.substring(6,8).toUpperCase();
+      const giv=v.substring(8,10).toUpperCase();
       if(!isNaN(mm)&&!isNaN(dd)&&mm>=1&&mm<=12&&dd>=1&&dd<=31
-        &&/^[A-Z]$/.test(city)&&/^[A-Z]$/.test(fam)&&/^[A-Z]$/.test(giv))
+        &&/^[A-Z]{2}$/.test(city)&&/^[A-Z]{2}$/.test(fam)&&/^[A-Z]{2}$/.test(giv))
         return{month:mm.toString(),day:dd.toString(),city,fam,giv};
     }
     return{month:"",day:"",city:"",fam:"",giv:""};
@@ -147,28 +148,27 @@ function CodeGen({value,onChange,isPost}){
   const[fam,setFam]=useState(p.fam);
   const[giv,setGiv]=useState(p.giv);
 
-  const build=(m,d,c,f,g)=>(m&&d&&c&&f&&g)?m.padStart(2,"0")+d.padStart(2,"0")+c.toUpperCase()+f.toUpperCase()+g.toUpperCase():"";
+  const build=(m,d,c,f,g)=>(m&&d&&c.length===2&&f.length===2&&g.length===2)?m.padStart(2,"0")+d.padStart(2,"0")+c+f+g:"";
   const cur=()=>build(month,day,city,fam,giv);
 
   const onM=(m)=>{setMonth(m);onChange(build(m,day,city,fam,giv));};
   const onD=(d)=>{setDay(d);onChange(build(month,d,city,fam,giv));};
-  const onC=(i)=>{const v=i.toUpperCase().replace(/[^A-Z]/g,"").charAt(0)||"";setCity(v);onChange(build(month,day,v,fam,giv));};
-  const onF=(i)=>{const v=i.toUpperCase().replace(/[^A-Z]/g,"").charAt(0)||"";setFam(v);onChange(build(month,day,city,v,giv));};
-  const onG=(i)=>{const v=i.toUpperCase().replace(/[^A-Z]/g,"").charAt(0)||"";setGiv(v);onChange(build(month,day,city,fam,v));};
+  const onC=(i)=>{const v=L2(i);setCity(v);onChange(build(month,day,v,fam,giv));};
+  const onF=(i)=>{const v=L2(i);setFam(v);onChange(build(month,day,city,v,giv));};
+  const onG=(i)=>{const v=L2(i);setGiv(v);onChange(build(month,day,city,fam,v));};
 
   const code=cur();
-  const filled=[month,day,city,fam,giv].filter(Boolean).length;
+  const filled=[month,day,city.length===2,fam.length===2,giv.length===2].filter(Boolean).length;
   const sel={width:"100%",padding:"10px 14px",border:`1.5px solid ${P.bdr}`,borderRadius:8,fontSize:15,fontFamily:"'Noto Sans JP',sans-serif",background:"rgba(255,255,255,0.08)",color:P.txt,outline:"none",cursor:"pointer"};
-  const inp=(val,fn,ph)=><input type="text" value={val} onChange={e=>fn(e.target.value)} maxLength={1}
-    placeholder={ph} style={{...sel,textTransform:"uppercase",cursor:"text"}}
+  const inp=(val,fn,ph)=><input type="text" value={val} onChange={e=>fn(e.target.value)} maxLength={2}
+    placeholder={ph} style={{...sel,textTransform:"uppercase",cursor:"text",letterSpacing:2}}
     onFocus={e=>e.target.style.borderColor=P.pri} onBlur={e=>e.target.style.borderColor=P.bdr}/>;
 
-  // Highlight individual segments in the code display
   const seg=(txt,active)=><span style={{color:active?P.priL:"rgba(255,255,255,0.25)",transition:"color 0.2s"}}>{txt}</span>;
 
   return <div>
     {isPost&&<p style={{fontSize:13,color:P.acc,marginBottom:12,lineHeight:1.7}}>事前アンケートと同じ情報を入力してください。同じ匿名コードが自動で生成されます。</p>}
-    <p style={{fontSize:13,color:P.mut,marginBottom:16,lineHeight:1.7}}>5つの項目を入力すると、匿名コード（7文字）が自動で生成されます。</p>
+    <p style={{fontSize:13,color:P.mut,marginBottom:16,lineHeight:1.7}}>5つの項目を入力すると、匿名コード（10文字）が自動で生成されます。</p>
 
     <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:16}}>
       <div style={{flex:"1 1 80px",minWidth:80}}>
@@ -187,17 +187,17 @@ function CodeGen({value,onChange,isPost}){
           {Array.from({length:31},(_,i)=>i+1).map(d=><option key={d} value={d}>{d}日</option>)}
         </select>
       </div>
-      <div style={{flex:"1 1 130px",minWidth:130}}>
-        <label style={{display:"block",fontSize:12,color:P.mut,marginBottom:6}}>生まれた市・郡・村<br/>ローマ字頭文字</label>
-        {inp(city,onC,"例：S（仙台）")}
+      <div style={{flex:"1 1 140px",minWidth:140}}>
+        <label style={{display:"block",fontSize:12,color:P.mut,marginBottom:6}}>出身地（市区町村）<br/>ローマ字頭2文字</label>
+        {inp(city,onC,"例：NA（長崎）")}
       </div>
-      <div style={{flex:"1 1 130px",minWidth:130}}>
-        <label style={{display:"block",fontSize:12,color:P.mut,marginBottom:6}}>名字（苗字）<br/>ローマ字頭文字</label>
-        {inp(fam,onF,"例：Y（山田）")}
+      <div style={{flex:"1 1 140px",minWidth:140}}>
+        <label style={{display:"block",fontSize:12,color:P.mut,marginBottom:6}}>名字（苗字）<br/>ローマ字頭2文字</label>
+        {inp(fam,onF,"例：SA（佐藤）")}
       </div>
-      <div style={{flex:"1 1 130px",minWidth:130}}>
-        <label style={{display:"block",fontSize:12,color:P.mut,marginBottom:6}}>名前（下の名前）<br/>ローマ字頭文字</label>
-        {inp(giv,onG,"例：H（裕紀）")}
+      <div style={{flex:"1 1 140px",minWidth:140}}>
+        <label style={{display:"block",fontSize:12,color:P.mut,marginBottom:6}}>名前（下の名前）<br/>ローマ字頭2文字</label>
+        {inp(giv,onG,"例：HI（裕紀）")}
       </div>
     </div>
 
@@ -205,12 +205,12 @@ function CodeGen({value,onChange,isPost}){
       <div style={{display:"flex",alignItems:"center",gap:20,flexWrap:"wrap"}}>
         <div>
           <p style={{fontSize:12,color:P.mut,margin:"0 0 6px"}}>あなたの匿名コード</p>
-          <p style={{fontSize:24,fontWeight:700,letterSpacing:4,fontFamily:"monospace",margin:0}}>
+          <p style={{fontSize:22,fontWeight:700,letterSpacing:3,fontFamily:"monospace",margin:0}}>
             {seg(month?month.padStart(2,"0"):"MM",!!month)}
             {seg(day?day.padStart(2,"0"):"DD",!!day)}
-            {seg(city||"C",!!city)}
-            {seg(fam||"F",!!fam)}
-            {seg(giv||"G",!!giv)}
+            {seg(city.length===2?city:"CC",city.length===2)}
+            {seg(fam.length===2?fam:"FF",fam.length===2)}
+            {seg(giv.length===2?giv:"GG",giv.length===2)}
           </p>
         </div>
         <div style={{flex:1,minWidth:160}}>
