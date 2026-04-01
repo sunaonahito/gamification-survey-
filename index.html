@@ -36,15 +36,15 @@ const P={bg:"linear-gradient(135deg,#0A1628 0%,#1A2744 30%,#1E3A5F 60%,#162D50 1
 // --- Questions ---
 const PRE={
   demo:[
-    {id:"q1",type:"code",label:"匿名コードを作成してください。"},
-    {id:"q2",dn:"Q1",type:"number",label:"あなたの年齢をお書きください。",ph:"歳",suf:"歳"},
-    {id:"q3",dn:"Q2",type:"radio",label:"あなたの性別を教えてください。",opts:["男性","女性","どちらでもない","回答しない"]},
-    {id:"q4",dn:"Q3",type:"checkbox",label:"あなたの民族的背景を教えてください。（当てはまるものすべて選択）",opts:["日本人","東アジア系（中国、韓国など）","東南アジア系（ベトナム、タイ、フィリピンなど）","南アジア系（インド、ネパールなど）","その他","回答しない"],hasOther:true,otherIdx:4},
-    {id:"q5",dn:"Q4",type:"radio",label:"学年を教えてください。",opts:["1年生","2年生","3年生","4年生","その他","回答しない"],hasOther:true,otherIdx:4},
-    {id:"q6",dn:"Q5",type:"radio",label:"あなたの所属学部を教えてください。",opts:["多文化社会学部","教育学部","経済学部","医学部","歯学部","薬学部","情報データ科学部","工学部","環境科学部","水産学部","その他","回答しない"]},
-    {id:"q7",dn:"Q6",type:"radio",label:"あなたの就労状況を教えてください。",opts:["現在、アルバイト・パートをしている","現在、アルバイト・パートはしていない","回答しない"]},
-    {id:"q8",dn:"Q7",type:"radio",label:"あなたの婚姻・交際状況を教えてください。",opts:["既婚","未婚（現在、パートナーがいる）","未婚（現在、パートナーがいない）","その他","回答しない"]},
-    {id:"q9",dn:"Q8",type:"radio",label:"子どもの有無を教えてください。",opts:["子どもがいる","子どもはいない","回答しない"]},
+    {id:"q1",dn:"Q1",type:"code",label:"匿名コードを作成してください。"},
+    {id:"q2",dn:"Q2",type:"number",label:"あなたの年齢をお書きください。",ph:"歳",suf:"歳"},
+    {id:"q3",dn:"Q3",type:"radio",label:"あなたの性別を教えてください。",opts:["男性","女性","どちらでもない","回答しない"]},
+    {id:"q4",dn:"Q4",type:"checkbox",label:"あなたの民族的背景を教えてください。（当てはまるものすべて選択）",opts:["日本人","東アジア系（中国、韓国など）","東南アジア系（ベトナム、タイ、フィリピンなど）","南アジア系（インド、ネパールなど）","その他","回答しない"],hasOther:true,otherIdx:4},
+    {id:"q5",dn:"Q5",type:"radio",label:"学年を教えてください。",opts:["1年生","2年生","3年生","4年生","その他","回答しない"],hasOther:true,otherIdx:4},
+    {id:"q6",dn:"Q6",type:"radio",label:"あなたの所属学部を教えてください。",opts:["多文化社会学部","教育学部","経済学部","医学部","歯学部","薬学部","情報データ科学部","工学部","環境科学部","水産学部","その他","回答しない"]},
+    {id:"q7",dn:"Q7",type:"radio",label:"あなたの就労状況を教えてください。",opts:["現在、アルバイト・パートをしている","現在、アルバイト・パートはしていない","回答しない"]},
+    {id:"q8",dn:"Q8",type:"radio",label:"あなたの婚姻・交際状況を教えてください。",opts:["既婚","未婚（現在、パートナーがいる）","未婚（現在、パートナーがいない）","その他","回答しない"]},
+    {id:"q9",dn:"Q9",type:"radio",label:"子どもの有無を教えてください。",opts:["子どもがいる","子どもはいない","回答しない"]},
   ],
   swls:{title:"§1.",inst:"以下の文は、あなたの人生全般に対する満足度をたずねるものです。正解や不正解はありません。感じたままに正直にお答えください。",scale:L7,items:[
     {id:"q10",t:"私は自分の人生に満足している。"},{id:"q11",t:"私の人生は、とても素晴らしい状態だ。"},{id:"q12",t:"大体において、私の人生は理想に近い。"},{id:"q13",t:"私はこれまで、自分の人生に求める大切なものを得てきた。"},{id:"q14",t:"もう一度人生をやり直せるとしても、ほとんど何も変えないだろう。"},{id:"q15",t:"私の人生は価値に満ちている。"},{id:"q16",t:"自分が存在していることには意味がある。"},{id:"q17",t:"毎日、生きていることに価値があると感じる。"},
@@ -61,7 +61,7 @@ const PRE={
 };
 
 const POST={
-  code:[{id:"q1",type:"code",label:"匿名コードを確認してください。",isPost:true}],
+  code:[{id:"q1",dn:"Q1",type:"code",label:"匿名コードを確認してください。",isPost:true}],
   swls:{title:"§1.",inst:"以下の文は、あなたの人生全般に対する満足度をたずねるものです。正解や不正解はありません。感じたままに正直にお答えください。",scale:L7,items:[
     {id:"q2",t:"私は自分の人生に満足している。"},{id:"q3",t:"私の人生は、とても素晴らしい状態だ。"},{id:"q4",t:"大体において、私の人生は理想に近い。"},{id:"q5",t:"私はこれまで、自分の人生に求める大切なものを得てきた。"},{id:"q6",t:"もう一度人生をやり直せるとしても、ほとんど何も変えないだろう。"},{id:"q7",t:"私の人生は価値に満ちている。"},{id:"q8",t:"自分が存在していることには意味がある。"},{id:"q9",t:"毎日、生きていることに価値があると感じる。"},
   ]},
@@ -243,7 +243,7 @@ function CodeGen({value,onChange,isPost}){
 function DQ({q,value,onChange,ov,onOv}){
   const fs={width:"100%",padding:"10px 14px",border:`1.5px solid ${P.bdr}`,borderRadius:8,fontSize:15,fontFamily:"'Noto Sans JP',sans-serif",background:"rgba(255,255,255,0.08)",color:P.txt,outline:"none",boxSizing:"border-box",transition:"border-color 0.2s"};
   if(q.type==="code")return <div style={{marginBottom:24}}>
-    <label style={{display:"block",fontSize:15,color:P.txt,marginBottom:12,lineHeight:1.7,fontWeight:500}}>{q.label}</label>
+    <label style={{display:"block",fontSize:15,color:P.txt,marginBottom:12,lineHeight:1.7,fontWeight:500}}><span style={{color:P.acc,fontWeight:600,marginRight:8,fontSize:13}}>{q.dn||q.id.toUpperCase()}</span>{q.label}</label>
     <CodeGen value={value} onChange={onChange} isPost={q.isPost}/>
   </div>;
   if(q.type==="text"||q.type==="number")return <div style={{marginBottom:24}}>
