@@ -127,51 +127,51 @@ function SS({section,answers,set}){
 }
 
 function CodeGen({value,onChange,isPost}){
-  const L2=(s)=>s.toUpperCase().replace(/[^A-Z]/g,"").substring(0,2);
+  const BLOOD=[{v:"1",l:"A型"},{v:"2",l:"B型"},{v:"3",l:"O型"},{v:"4",l:"AB型"},{v:"5",l:"不明"}];
+  const ROWS=[{v:"1",l:"あ行（あ〜お）"},{v:"2",l:"か行（か〜こ）"},{v:"3",l:"さ行（さ〜そ）"},{v:"4",l:"た行（た〜と）"},{v:"5",l:"な行（な〜の）"},{v:"6",l:"は行（は〜ほ）"},{v:"7",l:"ま行（ま〜も）"},{v:"8",l:"や行（や・ゆ・よ）"},{v:"9",l:"ら行（ら〜ろ）"},{v:"0",l:"わ行（わ・を・ん）"}];
   const parse=(v)=>{
-    if(v&&v.length>=10){
+    if(v&&v.length>=7){
       const mm=parseInt(v.substring(0,2),10);
       const dd=parseInt(v.substring(2,4),10);
-      const city=v.substring(4,6).toUpperCase();
-      const fam=v.substring(6,8).toUpperCase();
-      const giv=v.substring(8,10).toUpperCase();
+      const bl=v.substring(4,5);
+      const fr=v.substring(5,6);
+      const gr=v.substring(6,7);
       if(!isNaN(mm)&&!isNaN(dd)&&mm>=1&&mm<=12&&dd>=1&&dd<=31
-        &&/^[A-Z]{2}$/.test(city)&&/^[A-Z]{2}$/.test(fam)&&/^[A-Z]{2}$/.test(giv))
-        return{month:mm.toString(),day:dd.toString(),city,fam,giv};
+        &&BLOOD.some(o=>o.v===bl)&&ROWS.some(o=>o.v===fr)&&ROWS.some(o=>o.v===gr))
+        return{month:mm.toString(),day:dd.toString(),bl,fr,gr};
     }
-    return{month:"",day:"",city:"",fam:"",giv:""};
+    return{month:"",day:"",bl:"",fr:"",gr:""};
   };
   const p=parse(value);
   const[month,setMonth]=useState(p.month);
   const[day,setDay]=useState(p.day);
-  const[city,setCity]=useState(p.city);
-  const[fam,setFam]=useState(p.fam);
-  const[giv,setGiv]=useState(p.giv);
+  const[bl,setBl]=useState(p.bl);
+  const[fr,setFr]=useState(p.fr);
+  const[gr,setGr]=useState(p.gr);
+  const[autoLoaded,setAutoLoaded]=useState(false);
+  useEffect(()=>{if(isPost&&!value){try{const saved=localStorage.getItem("survey_anon_code");if(saved){const p2=parse(saved);if(p2.month){setMonth(p2.month);setDay(p2.day);setBl(p2.bl);setFr(p2.fr);setGr(p2.gr);onChange(saved);setAutoLoaded(true)}}}catch(e){}}},[]);
 
-  const build=(m,d,c,f,g)=>(m&&d&&c.length===2&&f.length===2&&g.length===2)?m.padStart(2,"0")+d.padStart(2,"0")+c+f+g:"";
-  const cur=()=>build(month,day,city,fam,giv);
+  const build=(m,d,b,f,g)=>(m&&d&&b&&f&&g)?m.padStart(2,"0")+d.padStart(2,"0")+b+f+g:"";
+  const cur=()=>build(month,day,bl,fr,gr);
 
-  const onM=(m)=>{setMonth(m);onChange(build(m,day,city,fam,giv));};
-  const onD=(d)=>{setDay(d);onChange(build(month,d,city,fam,giv));};
-  const onC=(i)=>{const v=L2(i);setCity(v);onChange(build(month,day,v,fam,giv));};
-  const onF=(i)=>{const v=L2(i);setFam(v);onChange(build(month,day,city,v,giv));};
-  const onG=(i)=>{const v=L2(i);setGiv(v);onChange(build(month,day,city,fam,v));};
+  const onM=(m)=>{setMonth(m);onChange(build(m,day,bl,fr,gr));};
+  const onD=(d)=>{setDay(d);onChange(build(month,d,bl,fr,gr));};
+  const onB=(b)=>{setBl(b);onChange(build(month,day,b,fr,gr));};
+  const onF=(f)=>{setFr(f);onChange(build(month,day,bl,f,gr));};
+  const onG=(g)=>{setGr(g);onChange(build(month,day,bl,fr,g));};
 
   const code=cur();
-  const filled=[month,day,city.length===2,fam.length===2,giv.length===2].filter(Boolean).length;
+  const filled=[month,day,bl,fr,gr].filter(Boolean).length;
   const sel={width:"100%",padding:"10px 14px",border:`1.5px solid ${P.bdr}`,borderRadius:8,fontSize:15,fontFamily:"'Noto Sans JP',sans-serif",background:"rgba(255,255,255,0.08)",color:P.txt,outline:"none",cursor:"pointer"};
-  const inp=(val,fn,ph)=><input type="text" value={val} onChange={e=>fn(e.target.value)} maxLength={2}
-    placeholder={ph} style={{...sel,textTransform:"uppercase",cursor:"text",letterSpacing:2}}
-    onFocus={e=>e.target.style.borderColor=P.pri} onBlur={e=>e.target.style.borderColor=P.bdr}/>;
 
   const seg=(txt,active)=><span style={{color:active?P.priL:"rgba(255,255,255,0.25)",transition:"color 0.2s"}}>{txt}</span>;
 
   return <div>
-    {isPost&&<p style={{fontSize:13,color:P.acc,marginBottom:12,lineHeight:1.7}}>事前アンケートと同じ情報を入力してください。同じ匿名コードが自動で生成されます。</p>}
-    <p style={{fontSize:13,color:P.mut,marginBottom:16,lineHeight:1.7}}>5つの項目を入力すると、匿名コード（10文字）が自動で生成されます。</p>
+    {isPost&&<p style={{fontSize:13,color:autoLoaded?"#4CAF50":P.acc,marginBottom:12,lineHeight:1.7,padding:autoLoaded?"10px 14px":0,background:autoLoaded?"rgba(76,175,80,0.12)":"transparent",borderRadius:8,border:autoLoaded?"1px solid rgba(76,175,80,0.3)":"none"}}>{autoLoaded?"✓ 事前アンケートのコードが自動入力されました。内容をご確認ください。":"事前アンケートと同じ項目を選択してください。同じ匿名コードが自動で生成されます。"}</p>}
+    <p style={{fontSize:13,color:P.mut,marginBottom:16,lineHeight:1.7}}>5つの項目を選択すると、匿名コード（7桁）が自動で生成されます。</p>
 
     <div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:16}}>
-      <div style={{flex:"1 1 80px",minWidth:80}}>
+      <div style={{flex:"1 1 90px",minWidth:90}}>
         <label style={{display:"block",fontSize:12,color:P.mut,marginBottom:6}}>生まれた月</label>
         <select value={month} onChange={e=>onM(e.target.value)} style={sel}
           onFocus={e=>e.target.style.borderColor=P.pri} onBlur={e=>e.target.style.borderColor=P.bdr}>
@@ -179,7 +179,7 @@ function CodeGen({value,onChange,isPost}){
           {Array.from({length:12},(_,i)=>i+1).map(m=><option key={m} value={m}>{m}月</option>)}
         </select>
       </div>
-      <div style={{flex:"1 1 80px",minWidth:80}}>
+      <div style={{flex:"1 1 90px",minWidth:90}}>
         <label style={{display:"block",fontSize:12,color:P.mut,marginBottom:6}}>生まれた日</label>
         <select value={day} onChange={e=>onD(e.target.value)} style={sel}
           onFocus={e=>e.target.style.borderColor=P.pri} onBlur={e=>e.target.style.borderColor=P.bdr}>
@@ -187,17 +187,29 @@ function CodeGen({value,onChange,isPost}){
           {Array.from({length:31},(_,i)=>i+1).map(d=><option key={d} value={d}>{d}日</option>)}
         </select>
       </div>
-      <div style={{flex:"1 1 140px",minWidth:140}}>
-        <label style={{display:"block",fontSize:12,color:P.mut,marginBottom:6}}>出身地（市区町村）<br/>ローマ字頭2文字</label>
-        {inp(city,onC,"例：NA（長崎）")}
+      <div style={{flex:"1 1 110px",minWidth:110}}>
+        <label style={{display:"block",fontSize:12,color:P.mut,marginBottom:6}}>血液型</label>
+        <select value={bl} onChange={e=>onB(e.target.value)} style={sel}
+          onFocus={e=>e.target.style.borderColor=P.pri} onBlur={e=>e.target.style.borderColor=P.bdr}>
+          <option value="">-- 選択 --</option>
+          {BLOOD.map(o=><option key={o.v} value={o.v}>{o.l}</option>)}
+        </select>
       </div>
-      <div style={{flex:"1 1 140px",minWidth:140}}>
-        <label style={{display:"block",fontSize:12,color:P.mut,marginBottom:6}}>名字（苗字）<br/>ローマ字頭2文字</label>
-        {inp(fam,onF,"例：SA（佐藤）")}
+      <div style={{flex:"1 1 150px",minWidth:150}}>
+        <label style={{display:"block",fontSize:12,color:P.mut,marginBottom:6}}>名字の頭文字の行</label>
+        <select value={fr} onChange={e=>onF(e.target.value)} style={sel}
+          onFocus={e=>e.target.style.borderColor=P.pri} onBlur={e=>e.target.style.borderColor=P.bdr}>
+          <option value="">-- 選択 --</option>
+          {ROWS.map(o=><option key={o.v} value={o.v}>{o.l}</option>)}
+        </select>
       </div>
-      <div style={{flex:"1 1 140px",minWidth:140}}>
-        <label style={{display:"block",fontSize:12,color:P.mut,marginBottom:6}}>名前（下の名前）<br/>ローマ字頭2文字</label>
-        {inp(giv,onG,"例：HI（裕紀）")}
+      <div style={{flex:"1 1 150px",minWidth:150}}>
+        <label style={{display:"block",fontSize:12,color:P.mut,marginBottom:6}}>名前の頭文字の行</label>
+        <select value={gr} onChange={e=>onG(e.target.value)} style={sel}
+          onFocus={e=>e.target.style.borderColor=P.pri} onBlur={e=>e.target.style.borderColor=P.bdr}>
+          <option value="">-- 選択 --</option>
+          {ROWS.map(o=><option key={o.v} value={o.v}>{o.l}</option>)}
+        </select>
       </div>
     </div>
 
@@ -205,18 +217,19 @@ function CodeGen({value,onChange,isPost}){
       <div style={{display:"flex",alignItems:"center",gap:20,flexWrap:"wrap"}}>
         <div>
           <p style={{fontSize:12,color:P.mut,margin:"0 0 6px"}}>あなたの匿名コード</p>
-          <p style={{fontSize:22,fontWeight:700,letterSpacing:3,fontFamily:"monospace",margin:0}}>
+          <p style={{fontSize:26,fontWeight:700,letterSpacing:4,fontFamily:"monospace",margin:0}}>
             {seg(month?month.padStart(2,"0"):"MM",!!month)}
             {seg(day?day.padStart(2,"0"):"DD",!!day)}
-            {seg(city.length===2?city:"CC",city.length===2)}
-            {seg(fam.length===2?fam:"FF",fam.length===2)}
-            {seg(giv.length===2?giv:"GG",giv.length===2)}
+            <span style={{margin:"0 2px"}}>-</span>
+            {seg(bl||"B",!!bl)}
+            {seg(fr||"F",!!fr)}
+            {seg(gr||"G",!!gr)}
           </p>
         </div>
         <div style={{flex:1,minWidth:160}}>
           {code
             ?<p style={{fontSize:12,color:P.mut,margin:0,lineHeight:1.7}}>{isPost?"このコードが事前アンケートと一致していることを確認してください。":<span>このコードはゲームの体験や事後アンケートでも使用します。<br/>記録しておいてください。</span>}</p>
-            :<p style={{fontSize:12,color:P.mut,margin:0,lineHeight:1.7}}>残り <strong style={{color:P.acc}}>{5-filled}</strong> 項目を入力するとコードが完成します。</p>
+            :<p style={{fontSize:12,color:P.mut,margin:0,lineHeight:1.7}}>残り <strong style={{color:P.acc}}>{5-filled}</strong> 項目を選択するとコードが完成します。</p>
           }
         </div>
       </div>
@@ -298,6 +311,7 @@ function App(){
     const ts=new Date().toISOString();
     const fa={...ans,game:"Dice of Destiny"};Object.keys(oth).forEach(k=>{if(oth[k])fa[`${k}_other`]=oth[k]});
     sendToSheets(view,fa,ts);
+    if(view==="pre"&&fa.q1){try{localStorage.setItem("survey_anon_code",fa.q1)}catch(e){}}
     setDone(true);window.scrollTo(0,0);
   };
 
