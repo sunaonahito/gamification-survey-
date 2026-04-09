@@ -382,11 +382,8 @@ function App(){
       <div style={{fontSize:48,marginBottom:16}}>✓</div>
       <h2 style={{fontFamily:"'Noto Serif JP',serif",fontSize:22,color:P.pri,marginBottom:12}}>ご回答ありがとうございました</h2>
       <p style={{fontSize:15,color:P.mut,lineHeight:1.8,maxWidth:400,margin:"0 auto 20px"}}>{view==="pre"?"ゲーム体験前のご質問への回答が完了しました。データは正常に記録されました。":"ゲーム体験後のご質問への回答が完了しました。ご協力ありがとうございました。"}</p>
-      <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
-        {view==="post"&&(()=>{let c=null;try{c=localStorage.getItem("survey_anon_code")}catch(e){}return c?<a href={`report.html?code=${encodeURIComponent(c)}`} target="_blank" rel="noopener noreferrer" style={{padding:"12px 32px",background:P.pri,color:"#fff",border:"none",borderRadius:8,fontSize:14,fontWeight:600,textDecoration:"none",transition:"all 0.2s"}}>回答結果レポートを見る</a>:null})()}
-        <button onClick={reset} style={{padding:"12px 32px",background:"transparent",color:P.pri,border:`2px solid ${P.pri}`,borderRadius:8,fontSize:14,cursor:"pointer",fontWeight:600,transition:"all 0.2s"}}
-          onMouseEnter={e=>{e.target.style.background=P.pri;e.target.style.color="#fff"}} onMouseLeave={e=>{e.target.style.background="transparent";e.target.style.color=P.pri}}>トップに戻る</button>
-      </div>
+      <div><button onClick={reset} style={{padding:"12px 32px",background:"transparent",color:P.pri,border:`2px solid ${P.pri}`,borderRadius:8,fontSize:14,cursor:"pointer",fontWeight:600,transition:"all 0.2s"}}
+        onMouseEnter={e=>{e.target.style.background=P.pri;e.target.style.color="#fff"}} onMouseLeave={e=>{e.target.style.background="transparent";e.target.style.color=P.pri}}>トップに戻る</button></div>
     </div>
   </div>;
 
